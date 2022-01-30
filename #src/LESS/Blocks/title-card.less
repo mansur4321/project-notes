@@ -1,0 +1,29 @@
+.title-card {
+	height: 100%;
+	background: #000;
+	padding: 24px;
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	&__title {
+		display: block;
+		margin: 0 0 24px;
+    	line-height: 1.1;
+    	.h2-title();
+    	width: 203px;
+
+    	@media (max-width: 800px) {
+	    	width: 130px;
+	    }
+	}
+
+	&__text {
+		font-family: 'Blanco';
+	    font-size: clamp(12px,calc(.8rem + .25vw),20px);
+	    font-weight: 400;
+	    line-height: 1.7;
+	    color: #fff;
+	}
+}

@@ -1,0 +1,19 @@
+.popular-articles {
+	height: 456px;
+	width: 100%;
+	display: flex;
+	margin-bottom: var(--otstup);
+
+	@media (max-width: 1199px) {
+		overflow-x: scroll;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0);
+		border-left: 1px solid @gray-2;
+	}
+
+	&::-webkit-scrollbar {
+	    height: 10px;
+	}
+}

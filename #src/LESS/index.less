@@ -1,0 +1,112 @@
+@import "nullstyle/nullStyle.less";
+
+@import "Variable/Variable.less";
+
+@import "mixins/mixins.less";
+
+* {
+	box-sizing: border-box;
+	--otstup: 3rem;
+	--maxWidth: 1600px;
+
+	@media (max-width: 1200px) {
+		--otstup: 2rem;
+    }
+
+    @media (max-width: 800px) {
+		--otstup: 1rem;
+    }
+
+    font-size: clamp(12px,calc(.8rem + .25vw),20px);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: @gray-2;
+    border-radius: 16px;
+    box-shadow: inset 2px 2px 2px hsl(0deg 0% 100% / 25%), inset -2px -2px 2px rgb(0 0 0 / 25%);
+}
+
+*::-webkit-scrollbar-track {
+	background: linear-gradient(90deg,@gray-2,@gray-2 1px,@black-fon 0,@black-fon);
+}
+
+*::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+body {
+	background-color: @gray-1;
+	font-family: 'MD Primer Bold', Sans-Serif;
+}
+
+
+
+
+@import "Blocks/container.less";
+
+@import "Blocks/shadow.less";
+
+@import "Blocks/header.less";
+
+@import "Blocks/logo.less";
+
+@import "Blocks/menu-button.less";
+
+@import "Blocks/search-accaunt.less";
+
+@import "Blocks/main-news.less";
+
+@import "Blocks/tag.less";
+
+@import "Blocks/author-row.less";
+
+@import "Blocks/popular-articles.less";
+
+@import "Blocks/border-gradient.less";
+
+@import "Blocks/title-card.less";
+
+@import "Blocks/cards.less";
+
+@import "Blocks/card.less";
+
+@import "Blocks/title-date.less";
+
+@import "Blocks/articles-and-sidebar.less";
+
+@import "Blocks/articles.less";
+
+@import "Blocks/article.less";
+
+@import "Blocks/sidebar.less";
+
+@import "Blocks/modul.less";
+
+@import "Blocks/modul-link.less";
+
+@import "Blocks/card-footer.less";
+
+@import "Blocks/link-style.less";
+
+@import "Blocks/articles-button.less";
+
+@import "Blocks/partner.less";
+
+@import "Blocks/showing.less";
+
+@import "Blocks/footer.less";
+
+@import "Blocks/link-list.less";
+
+@import "Blocks/form.less";
+
+@import "Blocks/opacity-text.less";
+
+@import "Blocks/colophon.less";
+
+@import "Blocks/icon-logo-star.less";
+
+
+
+@import "Modificator/Modificator.less";

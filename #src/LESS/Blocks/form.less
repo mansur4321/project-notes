@@ -1,0 +1,40 @@
+.form {
+
+	&__title {
+		font-family: 'MD Primer Bold', Sans-Serif;
+	    font-style: normal;
+	    font-weight: 700;
+	    letter-spacing: 1.6px;
+	    text-transform: uppercase;
+	    color: @orange-color;
+	    margin: 0 0 4px;
+	    line-height: 1.05;
+	    font-size: 24px;
+	}
+
+	&__text {
+		margin-bottom: 24px;
+	}
+
+	&__input-wrapper {
+		display: flex;
+		width: 100%;
+	}
+
+	&__input {
+		flex: 1;
+		min-width: 60px;
+	    margin-right: 8px;
+	    border-radius: 4px;
+	    font-family: 'SFMono-Regular', monospace;
+	    background: @white-1;
+	    border: 1px solid @gray-4!important;
+	    padding: 8px;
+	    border-radius: 4px;
+	    width: 100%;
+
+	    &:focus {
+	    	background: #fff;
+	    }
+	}
+}

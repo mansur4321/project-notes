@@ -1,0 +1,43 @@
+.header {
+	background: @black-fon;
+	display: flex;
+	border-bottom: 1px solid #676767;
+	height: 60px;
+	padding: 0 var(--otstup);
+	margin-bottom: var(--otstup);
+
+
+	@media (max-width: 1000px) {
+		padding: 20px 20px 0px;
+		height: 86px;
+	}
+
+	&__logo {
+		display: flex;
+		align-items: center;
+	}
+
+	&__nav {
+		width: 100%;
+		@media (max-width: 1000px) {
+			padding-top: 10px;
+		}
+	}
+
+	&__menu {
+		display: flex;
+		overflow: auto;
+		&-item {
+			@media (max-width: 1000px) {
+				&:first-child {
+					margin-left: -12px;
+				}
+			}
+			
+		}
+	}
+
+	@media (max-width: 1000px) {
+		flex-direction: column;			
+	}
+}

@@ -1,0 +1,13 @@
+.articles {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+
+	@media (max-width: 1022px) {
+		flex-direction: column;
+	}
+
+	@media (max-width: 800px) {
+		flex-direction: row;
+	}
+}
