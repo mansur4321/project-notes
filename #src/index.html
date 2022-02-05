@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 	<title>notes</title>
 	<link rel="stylesheet" href="css/index.min.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 </head>
+
 <body>
 
 	<div class="wrapper">
 		<div class="notes-panel">
 			<header class="header">
-				<a class="add-notes-btn">
+				<a class="add-note-btn">
 					Add note
-					<img src="img/plus.png" class="add-notes-btn__image">
+					<img src="img/plus.png" class="add-note-btn__image">
 				</a>
 
 				<form action="#" class="form-search">
-					<input type="text" class="form-search__search-input" placeholder="Название заметки"><span class="form-search__img"></span>
+					<input type="text" class="form-search__search-input" placeholder="Название заметки"><span
+						class="form-search__img"></span>
 				</form>
 			</header>
 
@@ -31,6 +34,7 @@
 						<p class="note-mini__date">
 							12.05
 						</p>
+
 						<a class="note-mini__delete-btn">
 							<img src="img/icon-delete.png" id="icon-delete">
 						</a>
@@ -75,13 +79,15 @@
 					<hr style="width: 80%; height: 1px; background: #c7c7c7;">
 
 					<div class="form-note">
-						<input type="text" class="form-note__name" placeholder="Note name">
-						<input type="text" class="form-note__text" placeholder="Note...">
+						<input type="text" class="form-note__name" placeholder="Note name" maxlength="20">
+						<textarea type="text" class="form-note__text" placeholder="Note..."></textarea>
 					</div>
-				</div>	
+				</div>
 			</div>
 		</div>
-	</div>	
-	
+	</div>
+
+	<script src="js/main.js"></script>
 </body>
-</html> 
+
+</html>
