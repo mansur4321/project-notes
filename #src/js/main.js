@@ -21,21 +21,19 @@ class Note {
 
         this._noteName = value;
     }
-
-
 }
 
+//индексы аниации для отображения и закрытия заметки
+const indexAnim = {
+    bind: 0,
+    clear: 1,
+}
 
 let notes = [],
     noteObj = {
         name: '',
         text: '',
     }
-
-const indexAnim = {
-    bind: 0,
-    clear: 1,
-}
 
 let addNoteBtn = document.querySelector('.add-note-btn'),
     sidebar = document.querySelector('.sidebar'),
@@ -112,6 +110,7 @@ iconCross.addEventListener('click', () => {
     clearFocus();
 });
 
+//Приводить дату к форме 0_, если надо
 function dateCorrection(date) {
     if (date < 10) {
         return `0${date}`;
@@ -126,24 +125,9 @@ function deleteListener() {
     deleteNote.forEach(note => {
         note.addEventListener('click', (e) => {
             e.stopPropagation();
+
             let nodeP = note.parentNode.parentNode;
-
-            let index = notes.findIndex(elem => {
-
-                if (nodeP.children[0].textContent.length == elem.noteName.length) {
-                    if (nodeP.children[0].textContent == elem.noteName) {
-                        return true;
-                    }
-                }
-            });
-
-            if (index == -1) {
-                return;
-            }
-
-            clearNote(nodeP.children[0].textContent);
-            notes.splice(index, 1);
-            nodeP.remove();
+            deleteNoteEverywhere(nodeP);
         })
     })
 }
@@ -166,6 +150,7 @@ function textChange() {
     noteObj.text = noteText.value;
 }
 
+//очищает главную панель заметки если в момент уделния заметка была открыта
 function clearNote(name) {
     if (name != noteNameElem.value) {
         return;
@@ -177,19 +162,22 @@ function clearNote(name) {
     comeInSight(indexAnim.clear);
 }
 
+//скрывает или переподсвечивает заметку в зависимости от индекса
 function comeInSight(index) {
     switch (index) {
         case 0:
-            noteMain.classList.remove('_come-in-sight');
+            noteMain.classList.remove('_come-out-sight');
             noteMain.classList.add('_come-in-sight');
             break;
 
         case 1:
             noteMain.classList.remove('_come-in-sight');
+            noteMain.classList.add('_come-out-sight');
             break;
     }
 }
 
+//убирает подсветку с заметок на которых имеется
 function clearFocus() {
     let noteStack = document.querySelectorAll('.note-mini');
 
@@ -200,8 +188,12 @@ function clearFocus() {
     });
 }
 
+//устанавливает в главной панели заметок и объекте, хранящем текущие данные,
+//информацию заметки, которую выбрал пользователь в sidebar
+//так же активизирует подсветку заметки на которую кликнули в sidebar
 function binding() {
     clearFocus();
+
     this.classList.add('_active-note-min');
 
     let note = notes.find(note => note.noteName == this.children[0].textContent);
@@ -213,4 +205,23 @@ function binding() {
     noteText.value = note.noteString;
 
     comeInSight(indexAnim.bind);
+}
+
+//полное удаление информации и отображения заметки
+function deleteNoteEverywhere(nodeP) {
+    let index = notes.findIndex(elem => {
+        if (nodeP.children[0].textContent.length == elem.noteName.length) {
+            if (nodeP.children[0].textContent == elem.noteName) {
+                return true;
+            }
+        }
+    });
+
+    if (index == -1) {
+        return;
+    }
+
+    clearNote(nodeP.children[0].textContent);
+    notes.splice(index, 1);
+    nodeP.remove();
 }
