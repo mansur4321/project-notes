@@ -7,6 +7,7 @@ class Note {
         this.fon = "#fff";
         this.fixedIndex = 0;
         this.date = date;
+        this._searchIndex = 0;
     }
 
     get noteName() {
@@ -15,11 +16,22 @@ class Note {
 
     set noteName(value) {
         if (value.length < 1) {
-            alert('Слишком короткое имя заметки!');
             return;
         }
 
         this._noteName = value;
+    }
+
+    get index() {
+        return this._searchIndex;
+    }
+
+    set index(value) {
+        //if (!+value) {
+        //    return;
+        //}
+
+        this._searchIndex = value;
     }
 }
 
@@ -30,9 +42,9 @@ const indexAnim = {
 }
 
 let notes = [],
+    range = new Range(),
     noteObj = {
-        name: '',
-        text: '',
+        index: 0,
     }
 
 let addNoteBtn = document.querySelector('.add-note-btn'),
@@ -41,36 +53,30 @@ let addNoteBtn = document.querySelector('.add-note-btn'),
     noteMini = document.querySelector('.note-mini'),
     noteNameElem = document.querySelector('.form-note__name'),
     noteText = document.querySelector('.form-note__text'),
-    iconCross = document.querySelector('#icon-cross');
+    actionsBtn = document.querySelector('.actions');
 
 noteMini.remove();
 
 
 
 addNoteBtn.addEventListener('click', () => {
-    console.log(notes);
+
     for (let value of notes) {
         if (value.noteName == '') {
             return;
         }
     }
 
-    let noteMiniClone = noteMini.cloneNode(true);
 
     let date = new Date();
     let note = new Note(`${dateCorrection(date.getDate())}.${dateCorrection((date.getMonth() + 1))}`);
     note = new Proxy(note, {
         set(target, prop, value) {
             if (prop == 'noteName') {
-                if (notes.find(note => note.noteName == value)) {
-                    alert('такое имя уже есть!');
-                    return false;
-                }
-
                 let noteStack = document.querySelectorAll('.note-mini');
 
                 noteStack.forEach(note => {
-                    if (note.children[0].textContent == target[prop]) {
+                    if (note.children[2].textContent == target.index) {
                         note.children[0].textContent = value;
                     }
                 });
@@ -81,34 +87,28 @@ addNoteBtn.addEventListener('click', () => {
             return true;
         }
     })
+
+    note.index = notes.length;
+    noteObj.index = note.index;
     notes.push(note);
 
+
+    let noteMiniClone = noteMini.cloneNode(true);
     noteMiniClone.children[0].textContent = note.noteName;
     noteMiniClone.children[1].textContent = note.date;
+    noteMiniClone.children[2].textContent = note.index;
 
     sidebar.append(noteMiniClone);
 
-    deleteListener();
+
+    deleteListener(noteMiniClone);
     noteCallListener();
     binding.call(noteMiniClone);
 });
 
-noteNameElem.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        nameChange();
-    }
-});
+noteNameElem.addEventListener('input', () => { nameChange() });
 
-noteText.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        textChange();
-    }
-});
-
-iconCross.addEventListener('click', () => {
-    comeInSight(indexAnim.clear);
-    clearFocus();
-});
+noteText.addEventListener('input', () => { textChange() });
 
 //Приводить дату к форме 0_, если надо
 function dateCorrection(date) {
@@ -119,17 +119,15 @@ function dateCorrection(date) {
     return date;
 }
 
-function deleteListener() {
-    let deleteNote = document.querySelectorAll('#icon-delete');
+function deleteListener(elem) {
+    let btnDel = elem.children[3].children[0];
 
-    deleteNote.forEach(note => {
-        note.addEventListener('click', (e) => {
-            e.stopPropagation();
+    btnDel.addEventListener('click', (e) => {
+        e.stopPropagation();
 
-            let nodeP = note.parentNode.parentNode;
-            deleteNoteEverywhere(nodeP);
-        })
+        deleteNoteEverywhere(elem);
     })
+
 }
 
 function noteCallListener() {
@@ -141,28 +139,14 @@ function noteCallListener() {
 }
 
 function nameChange() {
-    notes.find(note => note.noteName == noteObj.name).noteName = noteNameElem.value;
-    noteObj.name = noteNameElem.value;
+    notes.find(note => note.index == noteObj.index).noteName = noteNameElem.value;
 }
 
 function textChange() {
-    notes.find(note => note.noteName == noteObj.name).noteString = noteText.value;
-    noteObj.text = noteText.value;
+    notes.find(note => note.index == noteObj.index).noteString = noteText.innerHTML;
 }
 
-//очищает главную панель заметки если в момент уделния заметка была открыта
-function clearNote(name) {
-    if (name != noteNameElem.value) {
-        return;
-    }
-
-    noteNameElem.value = '';
-    noteText.value = '';
-
-    comeInSight(indexAnim.clear);
-}
-
-//скрывает или переподсвечивает заметку в зависимости от индекса
+//скрывает или подсвечивает заметку(запускает анимации) в зависимости от индекса
 function comeInSight(index) {
     switch (index) {
         case 0:
@@ -196,13 +180,13 @@ function binding() {
 
     this.classList.add('_active-note-min');
 
-    let note = notes.find(note => note.noteName == this.children[0].textContent);
+    let note = notes.find(note => note.index == this.children[2].textContent);
 
-    noteObj.name = note.noteName;
+
     noteNameElem.value = note.noteName;
+    noteText.innerHTML = note.noteString;
 
-    noteObj.text = note.noteString;
-    noteText.value = note.noteString;
+    noteObj.index = note.index;
 
     comeInSight(indexAnim.bind);
 }
@@ -210,10 +194,8 @@ function binding() {
 //полное удаление информации и отображения заметки
 function deleteNoteEverywhere(nodeP) {
     let index = notes.findIndex(elem => {
-        if (nodeP.children[0].textContent.length == elem.noteName.length) {
-            if (nodeP.children[0].textContent == elem.noteName) {
-                return true;
-            }
+        if (nodeP.children[2].textContent == elem.index) {
+            return true;
         }
     });
 
@@ -221,7 +203,104 @@ function deleteNoteEverywhere(nodeP) {
         return;
     }
 
-    clearNote(nodeP.children[0].textContent);
+    clearNote(nodeP.children[2].textContent);
     notes.splice(index, 1);
     nodeP.remove();
+    updateIndex();
 }
+
+//очищает главную панель заметки если в момент уделния заметка была открыта
+function clearNote(index) {
+    if (index != noteObj.index) {
+        return;
+    }
+
+    noteNameElem.value = '';
+    noteText.innerHTML = '';
+
+    comeInSight(indexAnim.clear);
+}
+
+//обновляет везде индексы после удаления заметки
+function updateIndex() {
+    let noteStack = document.querySelectorAll('.note-mini');
+
+    notes.forEach((elem, index) => {
+        noteStack.forEach(noteMin => {
+            if (noteMin.children[2].textContent == elem.index) {
+                noteMin.children[2].textContent = index;
+            }
+        })
+
+        if (elem.index == noteObj.index) {
+            noteObj.index = index;
+        }
+
+        elem.index = index;
+    })
+}
+
+actionsBtn.addEventListener('click', (e) => {
+    let target = e.target;
+
+    if (target.tagName == 'A') {
+        target = target.children[0].id;
+    } else if (target.tagName == 'IMG') {
+        target = target.id;
+    }
+
+    switch (target) {
+        case 'icon-b':
+            deligate('bold');
+            break;
+        case 'icone-italics':
+            deligate('italic');
+            break;
+        case 'icon-list':
+            deligate('insertUnorderedList');
+            break;
+        case 'icon-paper':
+            break;
+        case 'icon-t-shirt':
+            break;
+        case 'icon-office':
+            break;
+        case 'icon-cross':
+            comeInSight(indexAnim.clear);
+            clearFocus();
+            break;
+    }
+});
+
+function deligate(tag) {
+    document.execCommand(tag, false, null);
+    noteText.focus();
+    return false;
+}
+
+//Я начал полностью изменять логику редактирования текста, т.к. узнал что execCommand не везде поддерживается.
+//Но не не было ещё сделано. Запушил так, вернув старый код в deligate из комментариев и закоментировав новый
+//новый код делает тоже что и execCommand(но с ошибкой еще нерешенной)
+//let selection = document.getSelection();
+//    let firstIndexStr = selection.anchorOffset;
+//    let lastIndexStr = selection.focusOffset;
+
+//    let selected;
+//    let firstStr;
+//    let lastStr;
+
+//    if (firstIndexStr < lastIndexStr) {
+//        selected = noteText.textContent.slice(firstIndexStr, lastIndexStr);
+//        firstStr = noteText.innerHTML.slice(0, firstIndexStr);
+//        lastStr = noteText.innerHTML.slice(lastIndexStr, noteText.innerHTML.length);
+//    } else {
+//        selected = noteText.textContent.slice(lastIndexStr, firstIndexStr);
+//        firstStr = noteText.innerHTML.slice(0, lastIndexStr);
+//        lastStr = noteText.innerHTML.slice(firstIndexStr, noteText.innerHTML.length);
+//    }
+
+//    console.log(firstStr, selected, lastStr)
+
+
+//    selected = `<${tag}>${selected}</${tag}>`;
+//    noteText.innerHTML = firstStr + selected + lastStr;
