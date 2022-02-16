@@ -51,6 +51,7 @@ body {
 	max-width: 700px;
 	height: 500px;
 	background: #fff;
+	min-width: 530px;
 }
 
 .header {
@@ -254,6 +255,10 @@ body {
 		padding: 5px 1px;
 		resize: none;
 		height: 100%;
+
+		&:empty:not(:focus):before{
+			content:attr(data-ph)
+		}
 	}
 }
 
