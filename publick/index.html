@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>notes</title>
+	<link rel="stylesheet" href="css/index.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+
+	<div class="wrapper">
+		<div class="notes-panel">
+			<header class="header">
+				<a class="add-note-btn">
+					Add note
+					<img src="img/plus.png" class="add-note-btn__image">
+				</a>
+
+				<form action="#" class="form-search">
+					<input type="text" class="form-search__search-input" placeholder="Название заметки"><span
+						class="form-search__img"></span>
+				</form>
+			</header>
+
+			<div class="main">
+				<div class="sidebar">
+					<div class="note-mini">
+						<p class="note-mini__name">
+							Foooooo
+						</p>
+
+						<p class="note-mini__date">
+							12.05
+						</p>
+
+						<div class="search-index"></div>
+
+						<a class="note-mini__delete-btn">
+							<img src="img/icon-delete.png" id="icon-delete">
+						</a>
+					</div>
+
+				</div>
+
+				<div class="main-note">
+					<div class="actions">
+						<div class="actions__text">
+							<a href="#" class="action">
+								<img src="img/icon-b.png" id="icon-b">
+							</a>
+
+							<a href="#" class="action">
+								<img src="img/icone-italics.png" id="icone-italics">
+							</a>
+
+							<a href="#" class="action">
+								<img src="img/icon-list.png" id="icon-list">
+							</a>
+
+							<a href="#" class="action">
+								<img src="img/icon-paper.png" id="icon-paper">
+							</a>
+
+							<a href="#" class="action">
+								<img src="img/icon-t-shirt.png" id="icon-t-shirt">
+							</a>
+						</div>
+
+						<div class="actions__note-window">
+							<a href="#" class="action">
+								<img src="img/icon-office-push-pin.png" id="icon-office">
+							</a>
+
+							<a href="#" class="action">
+								<img src="img/icon-cross.png" id="icon-cross">
+							</a>
+						</div>
+					</div>
+					<hr style="width: 80%; height: 1px; background: #c7c7c7;">
+
+					<div class="form-note">
+						<input type="text" class="form-note__name" placeholder="Note name" maxlength="20">
+
+						<div type="text" class="form-note__text" placeholder="Note..." contenteditable>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/main.js"></script>
+</body>
+
+</html>
